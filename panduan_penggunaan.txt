@@ -1,0 +1,6 @@
+----------kirim data dari kontroller ke database-------------
+
+$id_charging_station => id atau key atau nomor unik dari tiap charging station
+$arus $tegangan => data yang ditangkap dari mesin kontroler
+
+localhost/monitoring-charging-station-gesits/Monitoring/insert?id_charging_station=$id_charging_station&arus=$arus$tegangan=$tegangan
