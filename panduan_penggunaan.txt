@@ -2,8 +2,8 @@
 
 $id_charging_station => set paten langsung dari kontroler (contoh 1 2 3 4 dst), untuk skrg set 1 saja sesuai data charging station yg ada pada database
 
-localhost/Monitoring/insert?id_charging_station=$id_charging_station&arus=$arus&tegangan=$tegangan&daya=$daya&biaya=$biaya&lifetime=$lifetime
 
+http://localhost/monitoring-charging-station-gesits/Monitoring/insert?id_charging_station=1&arus=7.0&tegangan=4.2&daya=8&biaya=1000&lifetime=15
 
 **Note**
 ___________________________________
