@@ -1,6 +1,6 @@
 ----------kirim data dari kontroller ke database-------------
 
-$id_charging_station => set paten langsung dari kontroler (contoh 1 2 3 4 dst)
+$id_charging_station => set paten langsung dari kontroler (contoh 1 2 3 4 dst), untuk skrg set 1 saja sesuai data charging station yg ada pada database
 
 localhost/Monitoring/insert?id_charging_station=$id_charging_station&arus=$arus&tegangan=$tegangan&daya=$daya&biaya=$biaya&lifetime=$lifetime
 
