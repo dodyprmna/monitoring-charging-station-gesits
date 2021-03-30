@@ -14,26 +14,33 @@ class Monitoring extends CI_Controller {
 
     public function insert()
     {
+        //ambil data dari kontroler
     	$fk_charging_station    = $this->input->get('id_charging_station');
-        // $waktu                  = $this->input->get('waktu');
         $arus                   = $this->input->get('arus');
         $tegangan               = $this->input->get('tegangan');
+        $daya                   = $this->input->get('daya');
+        $biaya                  = $this->input->get('biaya');
+        $lifetime               = $this->input->get('lifetime');
 
         $data = array(
             'fk_charging_station'   => $fk_charging_station, 
-            // 'waktu'                 => $waktu,
             'arus'                  => $arus,
-            'tegangan'              => $tegangan
+            'tegangan'              => $tegangan,
+            'daya'                  => $daya,
+            'biaya'                 => $biaya,
+            'lifetime'              => $lifetime
         );
 
-        // echo $fk_charging_station;
+        //input data ke database
         $insert = $this->M_codeigniter->insert('tbl_monitoring',$data);
 
+        // jika berhasil input tampikan pesan sukses
         if ($insert) {
             echo "sukses";
         } else {
             echo "gagal";
-        }
-        
+        }        
     }
+
+
 }
