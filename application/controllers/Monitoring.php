@@ -42,5 +42,17 @@ class Monitoring extends CI_Controller {
         }        
     }
 
+    public function get_data_real_time()
+    {
+        // $id = $this->input->get('id_charging_station');
+        $id = "1";
+        $data = array(
+            'monitoring'    => $this->M_monitoring->get_by_id($id)->result(),
+            'header'        => $this->M_monitoring->get_data_header($id)->row()
+        );
+
+        print_r(json_encode($data));
+    }
+
 
 }
