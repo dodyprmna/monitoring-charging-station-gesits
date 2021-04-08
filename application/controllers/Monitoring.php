@@ -9,7 +9,7 @@ class Monitoring extends CI_Controller {
 	}
 
 	public function index(){
-        
+        $this->load->view('home');
     }
 
     public function insert()
@@ -44,14 +44,15 @@ class Monitoring extends CI_Controller {
 
     public function get_data_real_time()
     {
-        // $id = $this->input->get('id_charging_station');
-        $id = "1";
+        $id = $this->input->post('id');
         $data = array(
-            'monitoring'    => $this->M_monitoring->get_by_id($id)->result(),
-            'header'        => $this->M_monitoring->get_data_header($id)->row()
+            'monitor'    => $this->M_monitoring->get_by_id($id)->result(),
+            'header'     => $this->M_monitoring->get_data_header($id)->row()
         );
 
-        print_r(json_encode($data));
+        $output = $this->load->view('detail_monitoring',$data,true);
+
+        echo json_encode($output);
     }
 
 
