@@ -45,13 +45,19 @@ class Monitoring extends CI_Controller {
     public function get_data_real_time()
     {
         $id = $this->input->post('id');
-        $data = array(
-            'monitor'    => $this->M_monitoring->get_by_id($id)->result(),
-            'header'     => $this->M_monitoring->get_data_header($id)->row()
-        );
+        
+        $charging = $this->M_codeigniter->get_where('tbl_charging_station',array('id_charging_station' => $id))->num_rows();
 
-        $output = $this->load->view('detail_monitoring',$data,true);
-
+        if ($charging > 0) {
+            $data = array(
+                'monitor'    => $this->M_monitoring->get_by_id($id)->result(),
+                'header'     => $this->M_monitoring->get_data_header($id)->row()
+            );
+    
+            $output = $this->load->view('detail_monitoring',$data,true);
+        }else{
+            $output = "<div class='col-lg-12'><center><h4>Data tidak ditemukan, silahkan scan ulang dengan qrcode yang benar</h4></center><br><div class='form-group'><button class='btn btn-primary' id='btn-scan' style='width: 100%;'>Scan</button></div></div>";
+        }
         echo json_encode($output);
     }
 
