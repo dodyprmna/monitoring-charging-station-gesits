@@ -100,35 +100,53 @@
 
             $(document).ready(function () {
                 
+                // ketika membuka halaman ini
+                // otomatis akan menyembunyikan tombol scan dan menjalankan fungsi camScanner
                 $("#btn-scan").hide();
                 camScanner();
 
+                // ketika btn-scan di clik akan menjalankan fungsi dibawah
                 $(document).on("click", "#btn-scan", function () {
                     location.reload();
                 });
             });
 
+            // fungsi camScanner
             function camScanner() {
+
+                // variabel scanner untuk menjalankan scanner pada documen dengan id preview
                 let scanner = new Instascan.Scanner({ video: document.getElementById('preview'),mirror: false, });
+
+                // scan qr code untuk menangkap isi qrcode yg disimpan dalam content
                 scanner.addListener('scan', function (content) {
 
+                    // menjalankan bunyi beep
                     var sound = document.getElementById("sound");
                     sound.play();
 
-                    var getDataRealtime = setInterval(function (){ 
+                    // menjalankan ajax request dengan interval 1 detik
+                    setInterval(function (){ 
                             $.ajax({
                                 url: "Monitoring/get_data_real_time",
                                 type: "post",
                                 dataType: "json",
                                 data: {id : content},
+
+                                //ketika sukses, menjalankan fungsi dibawah
                                 success: function (data) {
+                                    // set document id data-monitoring dengan data
+                                    // data dikirim dari controller Monitoring/get_data_real_time dalam bentuk json
                                     $("#data-monitoring").html(data);
+
+                                    //dataTables
                                     $('#tabel-monitoring').dataTable({
                                         searching: false,
                                         scrollY : '370px',
                                         paging: false,
                                         info: false
                                     });
+
+                                    // menonaktifkan scanner dan menyembunyikannya
                                     scanner.stop();
                                     $("#data-scanner").hide();
                                 },
@@ -136,16 +154,25 @@
                     }, 1000);
                     
                 });
+
+                // get camera
                 Instascan.Camera.getCameras().then(function (cameras) {
+
+                    // apakah diperangkat ini terdapat kamera?
                     if (cameras.length > 0) {
+                        // jika iya
+                        // cek apakah ada kamera ke 2 (kamera belakang)
+                        // jika ada start kamera belakang
                         if (cameras[1]) {
                             scanner.start(cameras[1]);
                         } else {
+                            // jika tidak start kamera depan/ webcam laptop
                             scanner.start(cameras[0]);
                         }
                     
                     } else {
-                    console.error('No cameras found.');
+                        // jika tidak ada kamera sama sekali, menampilkan error
+                        console.error('No cameras found.');
                     }
                 }).catch(function (e) {
                     console.error(e);
