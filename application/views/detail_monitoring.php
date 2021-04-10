@@ -6,42 +6,47 @@
 <div class="col-lg-12">
     <form role="form">
         <div class="form-group input-group">
-            <label class="input-group-addon">Lifetime = </label>
-            <input type="text" class="form-control" value="" readonly>
+            <label class="input-group-addon">Charger</label>
+            <input type="text" class="form-control" value="<?= $header->nama_charger?>" readonly>
+        </div>
+        <div class="form-group input-group">
+            <label class="input-group-addon">Lifetime</label>
+            <input type="text" class="form-control" value="<?= $header->lifetime?>" readonly>
             <label class="input-group-addon">Kali</label>
         </div>
         <div class="form-group input-group">
-            <label class="input-group-addon">Presentase Baterai = </label>
-            <input type="text" class="form-control" value="" readonly>
-            <label class="input-group-addon">%</label>
-        </div>
-        <div class="form-group input-group">
-            <label class="input-group-addon">Daya = </label>
+            <label class="input-group-addon">Daya</label>
             <input type="text" class="form-control" value="<?= $header->daya?>" readonly>
             <label class="input-group-addon">Watt</label>
         </div>
         <div class="form-group input-group">
-            <label class="input-group-addon">Biaya = </label>
+            <label class="input-group-addon">Biaya</label>
             <span class="input-group-addon">Rp</span>
-            <input type="text" class="form-control" value="" readonly>
-            <span class="input-group-addon">.00</span>
+            <input type="text" class="form-control" value="<?= number_format($header->biaya,2,',','.');?>" readonly>
         </div>
         <div class="form-group input-group">
-            <label class="input-group-addon">Status = </label>
-            <input type="text" class="form-control" value="" readonly>
-
+            <label class="input-group-addon" style="text-align: left;">Status = </label>
+            <input type="text" class="form-control"readonly>
+            <span class="input-group-addon" style="text-align: center;">
+                <?php if($status == 1):?>
+                    <span class="badge badge-success">Charging</span>
+                <?php else:?>
+                    <span class="badge badge-danger" style="background-color: red;">Off</span>
+                <?php endif;?>
+            </span>
+            
         </div>
     </form>
 </div>
 <div class="col-lg-12">
-    <div class="panel panel-default">
+    <div class="panel panel-default" style="height: 500px;">
         <div class="panel-heading">
             Data Monitoring
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table class="table table-striped table-bordered table-hover" id="tabel-monitoring">
                     <thead>
                         <tr>
                             <th>No</th>

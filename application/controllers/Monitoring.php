@@ -45,13 +45,16 @@ class Monitoring extends CI_Controller {
     public function get_data_real_time()
     {
         $id = $this->input->post('id');
+        $now = date("Y-m-d H:i:s");
         
         $charging = $this->M_codeigniter->get_where('tbl_charging_station',array('id_charging_station' => $id))->num_rows();
-
+        $status = $this->M_monitoring->get_status($id,date('Y-m-d H:i:s',strtotime('-1 seconds',strtotime($now))))->num_rows();
+        
         if ($charging > 0) {
             $data = array(
                 'monitor'    => $this->M_monitoring->get_by_id($id)->result(),
-                'header'     => $this->M_monitoring->get_data_header($id)->row()
+                'header'     => $this->M_monitoring->get_data_header($id)->row(),
+                'status'     => $status,
             );
     
             $output = $this->load->view('detail_monitoring',$data,true);

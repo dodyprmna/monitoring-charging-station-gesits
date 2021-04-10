@@ -109,7 +109,7 @@
             });
 
             function camScanner() {
-                let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+                let scanner = new Instascan.Scanner({ video: document.getElementById('preview'),mirror: false, });
                 scanner.addListener('scan', function (content) {
 
                     var sound = document.getElementById("sound");
@@ -122,18 +122,28 @@
                                 dataType: "json",
                                 data: {id : content},
                                 success: function (data) {
-                                    
                                     $("#data-monitoring").html(data);
+                                    $('#tabel-monitoring').dataTable({
+                                        searching: false,
+                                        scrollY : '370px',
+                                        paging: false,
+                                        info: false
+                                    });
                                     scanner.stop();
                                     $("#data-scanner").hide();
                                 },
                             });
-                    }, 3000);
+                    }, 1000);
                     
                 });
                 Instascan.Camera.getCameras().then(function (cameras) {
                     if (cameras.length > 0) {
-                    scanner.start(cameras[0]);
+                        if (cameras[1]) {
+                            scanner.start(cameras[1]);
+                        } else {
+                            scanner.start(cameras[0]);
+                        }
+                    
                     } else {
                     console.error('No cameras found.');
                     }

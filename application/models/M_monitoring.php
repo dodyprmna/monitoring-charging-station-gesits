@@ -32,4 +32,15 @@ class M_monitoring extends CI_Model {
 
         return $this->db->get();
     }
+
+    public function get_status($id,$waktu)
+    {
+        $this->db->select('m.*, c.nama_charger');
+        $this->db->from('tbl_monitoring m');
+        $this->db->join('tbl_charging_station c','m.fk_charging_station = c.id_charging_station');
+        $this->db->where('c.id_charging_station',$id);
+        $this->db->where('m.waktu',$waktu);
+
+        return $this->db->get();
+    }
 }
