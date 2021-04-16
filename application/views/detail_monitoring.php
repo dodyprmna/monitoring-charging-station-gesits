@@ -11,7 +11,7 @@
         </div>
         <div class="form-group input-group">
             <label class="input-group-addon">Lifetime</label>
-            <input type="text" class="form-control" value="<?= $header->lifetime?>" readonly>
+            <input type="text" class="form-control" value="<?= $lifetime?>" readonly>
             <label class="input-group-addon">Kali</label>
         </div>
         <div class="form-group input-group">

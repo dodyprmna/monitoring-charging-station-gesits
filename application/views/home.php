@@ -43,6 +43,54 @@
                 <div class="navbar-header">
                     <a class="navbar-brand">Monitoring Charging Station</a>
                 </div>
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <ul class="nav navbar-right navbar-top-links">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw"></i><b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav" id="side-menu">
+                            <li class="sidebar-search">
+                                <div class="input-group custom-search-form">
+                                    <input type="text" class="form-control" placeholder="Search...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                </span>
+                                </div>
+                                <!-- /input-group -->
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo base_url('Monitoring')?>"><i class="fa fa-search fa-fw"></i> Scan QR</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.sidebar-collapse -->
+                </div>
                 <!-- /.navbar-static-side -->
             </nav>
 
@@ -124,35 +172,56 @@
                     var sound = document.getElementById("sound");
                     sound.play();
 
-                    // menjalankan ajax request dengan interval 1 detik
-                    setInterval(function (){ 
-                            $.ajax({
-                                url: "Monitoring/get_data_real_time",
-                                type: "post",
-                                dataType: "json",
-                                data: {id : content},
+                    // insert data scan
+                    $.ajax({
+                        url: "Monitoring/scan",
+                        type: "post",
+                        dataType: "json",
+                        data: {id : content},
 
-                                //ketika sukses, menjalankan fungsi dibawah
-                                success: function (data) {
-                                    // set document id data-monitoring dengan data
-                                    // data dikirim dari controller Monitoring/get_data_real_time dalam bentuk json
-                                    $("#data-monitoring").html(data);
+                        //ketika sukses, menjalankan fungsi dibawah
+                        success: function (data) {
+                            // jika status berhasil
+                            // menjalankan ajax request dengan interval 1 detik
 
-                                    //dataTables
-                                    $('#tabel-monitoring').dataTable({
-                                        searching: false,
-                                        scrollY : '370px',
-                                        paging: false,
-                                        info: false
-                                    });
+                            if(data.status){
+                                setInterval(function (){ 
+                                        $.ajax({
+                                            url: "Monitoring/get_data_real_time",
+                                            type: "post",
+                                            dataType: "json",
+                                            data: {id : content},
 
-                                    // menonaktifkan scanner dan menyembunyikannya
-                                    scanner.stop();
-                                    $("#data-scanner").hide();
-                                },
-                            });
-                    }, 1000);
-                    
+                                            //ketika sukses, menjalankan fungsi dibawah
+                                            success: function (data) {
+                                                // set document id data-monitoring dengan data
+                                                // data dikirim dari controller Monitoring/get_data_real_time dalam bentuk json
+                                                $("#data-monitoring").html(data);
+
+                                                //dataTables
+                                                $('#tabel-monitoring').dataTable({
+                                                    searching: false,
+                                                    scrollY : '370px',
+                                                    paging: false,
+                                                    info: false
+                                                });
+
+                                                // menonaktifkan scanner dan menyembunyikannya
+                                                scanner.stop();
+                                                $("#data-scanner").hide();
+                                            },
+                                        });
+                                }, 1000);
+                            }else{
+                                // jika gagal
+                                // menampilkan pesan
+                                $("#data-monitoring").html(data.pesan);
+                                // menutup scanner
+                                scanner.stop();
+                                $("#data-scanner").hide();
+                            }
+                        },
+                    });
                 });
 
                 // get camera

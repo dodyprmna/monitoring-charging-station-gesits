@@ -45,6 +45,38 @@ class Monitoring extends CI_Controller {
         }        
     }
 
+    public function scan()
+    {
+        // get id dari scan
+        $id = $this->input->post('id');
+
+        //get jumlah device terdaftar di db?
+        $cek = $this->M_codeigniter->get_where('tbl_charging_station',array('id_charging_station' => $id))->num_rows();
+
+        // data scan
+        $data_scan = array(
+            'fk_charger' => $id, 
+        );
+
+        //jika jumlah lebih dari 0 atau terdapat device dengan identitas qrcode yg discan
+        if ($cek > 0) {
+
+            //input data scan
+            $this->M_codeigniter->insert('tbl_scan',$data_scan);
+            $output = array(
+                'status' => true,
+                'pesan' => 'sukses'
+            );
+        } else {
+            $output = array(
+                'status' => false,
+                'pesan' => "<div class='col-lg-12'><center><h4>Data tidak ditemukan, silahkan scan ulang dengan qrcode yang benar</h4></center><br><div class='form-group'><button class='btn btn-primary' id='btn-scan' style='width: 100%;'>Scan</button></div></div>"
+            );
+        }
+
+        echo json_encode($output);
+    }
+
 
     // fungsi ambil data realtime
     public function get_data_real_time()
@@ -54,29 +86,21 @@ class Monitoring extends CI_Controller {
 
         //ambil tanggal dan waktu sekarang
         $now = date("Y-m-d H:i:s");
-        
-        //ambil data charging station
-        $charging = $this->M_codeigniter->get_where('tbl_charging_station',array('id_charging_station' => $id))->num_rows();
 
         //ambil data 1 detik terakhir untuk menentukan status charging atau off
         $status = $this->M_monitoring->get_status($id,date('Y-m-d H:i:s',strtotime('-1 seconds',strtotime($now))))->num_rows();
         
         //cek apakah ada data charging station berdasarkan id yg diambil dari scan qrcode ?
         // jika ada, ambil data monitoring charging statiom tsb
-        if ($charging > 0) {
-            $data = array(
-                'monitor'    => $this->M_monitoring->get_by_id($id)->result(),
-                'header'     => $this->M_monitoring->get_data_header($id)->row(),
-                'status'     => $status,
-            );
-            
-            //set output dengan tampilan detail_monitoring
-            $output = $this->load->view('detail_monitoring',$data,true);
-        }else{
-            // jika tidak ada, set output dengan notifikasi sebagai berikut
-            $output = "<div class='col-lg-12'><center><h4>Data tidak ditemukan, silahkan scan ulang dengan qrcode yang benar</h4></center><br><div class='form-group'><button class='btn btn-primary' id='btn-scan' style='width: 100%;'>Scan</button></div></div>";
-        }
-
+        $data = array(
+            'monitor'    => $this->M_monitoring->get_by_id($id)->result(),
+            'header'     => $this->M_monitoring->get_data_header($id)->row(),
+            'lifetime'   => $this->M_codeigniter->get_where('tbl_scan', array('fk_charger' => $id))->num_rows(),
+            'status'     => $status,
+        );
+        
+        //set output dengan tampilan detail_monitoring
+        $output = $this->load->view('detail_monitoring',$data,true);
         // echo $output dalam bentuk json
         echo json_encode($output);
     }

@@ -59,7 +59,7 @@ CREATE TABLE `tbl_monitoring` (
   PRIMARY KEY (`id_monitoring`),
   KEY `tbl_monitoring_FK` (`fk_charging_station`),
   CONSTRAINT `tbl_monitoring_FK` FOREIGN KEY (`fk_charging_station`) REFERENCES `tbl_charging_station` (`id_charging_station`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,8 +68,33 @@ CREATE TABLE `tbl_monitoring` (
 
 LOCK TABLES `tbl_monitoring` WRITE;
 /*!40000 ALTER TABLE `tbl_monitoring` DISABLE KEYS */;
-INSERT INTO `tbl_monitoring` VALUES (1,1,7,4.2,8,1000,14,'2021-03-30 22:12:41'),(3,1,7,4.2,8,1000,14,'2021-03-30 22:12:44');
+INSERT INTO `tbl_monitoring` VALUES (12,1,7,4.2,7,1000,15,'2021-04-08 23:30:12');
 /*!40000 ALTER TABLE `tbl_monitoring` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_scan`
+--
+
+DROP TABLE IF EXISTS `tbl_scan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbl_scan` (
+  `id_scan` int NOT NULL AUTO_INCREMENT,
+  `fk_charger` int DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_scan`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_scan`
+--
+
+LOCK TABLES `tbl_scan` WRITE;
+/*!40000 ALTER TABLE `tbl_scan` DISABLE KEYS */;
+INSERT INTO `tbl_scan` VALUES (1,1,'2021-04-15 20:23:04'),(2,1,'2021-04-16 07:43:55'),(3,1,'2021-04-16 07:44:06'),(4,1,'2021-04-16 07:44:54'),(5,1,'2021-04-16 08:01:20');
+/*!40000 ALTER TABLE `tbl_scan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -85,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-30 22:13:25
+-- Dump completed on 2021-04-16  8:03:38
