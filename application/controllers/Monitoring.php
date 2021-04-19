@@ -22,7 +22,6 @@ class Monitoring extends CI_Controller {
         $tegangan               = $this->input->get('tegangan');
         $daya                   = $this->input->get('daya');
         $biaya                  = $this->input->get('biaya');
-        $lifetime               = $this->input->get('lifetime');
 
         // simpan dalam array
         $data = array(
@@ -31,7 +30,6 @@ class Monitoring extends CI_Controller {
             'tegangan'              => $tegangan,
             'daya'                  => $daya,
             'biaya'                 => $biaya,
-            'lifetime'              => $lifetime
         );
 
         //input data ke database tbl_monitoring

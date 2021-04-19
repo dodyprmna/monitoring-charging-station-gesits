@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.22, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.23, for Linux (x86_64)
 --
 -- Host: localhost    Database: monitoring_charging_station_gesits
 -- ------------------------------------------------------
--- Server version	8.0.22-0ubuntu0.20.04.3
+-- Server version	8.0.23-0ubuntu0.20.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -54,7 +54,6 @@ CREATE TABLE `tbl_monitoring` (
   `tegangan` double DEFAULT NULL,
   `daya` double DEFAULT NULL,
   `biaya` int DEFAULT NULL,
-  `lifetime` bigint DEFAULT NULL,
   `waktu` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_monitoring`),
   KEY `tbl_monitoring_FK` (`fk_charging_station`),
@@ -68,7 +67,7 @@ CREATE TABLE `tbl_monitoring` (
 
 LOCK TABLES `tbl_monitoring` WRITE;
 /*!40000 ALTER TABLE `tbl_monitoring` DISABLE KEYS */;
-INSERT INTO `tbl_monitoring` VALUES (12,1,7,4.2,7,1000,15,'2021-04-08 23:30:12');
+INSERT INTO `tbl_monitoring` VALUES (12,1,7,4.2,7,1000,'2021-04-08 23:30:12');
 /*!40000 ALTER TABLE `tbl_monitoring` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,4 +109,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-16  8:03:38
+-- Dump completed on 2021-04-19  7:47:43

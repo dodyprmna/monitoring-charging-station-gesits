@@ -6,8 +6,8 @@
 <div class="col-lg-12">
     <form role="form">
         <div class="form-group input-group">
-            <label class="input-group-addon">Charger</label>
-            <input type="text" class="form-control" value="<?= $header->nama_charger?>" readonly>
+            <label class="input-group-addon">Lokasi</label>
+            <input type="text" class="form-control" value="Keputih" readonly>
         </div>
         <div class="form-group input-group">
             <label class="input-group-addon">Lifetime</label>
