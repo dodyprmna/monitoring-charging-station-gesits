@@ -16,20 +16,25 @@
         </div>
         <div class="form-group input-group">
             <label class="input-group-addon">Daya</label>
-            <input type="text" class="form-control" value="<?= $header->daya?>" readonly>
+            <input type="text" class="form-control" value="<?= (!empty($header)) ? $header->daya : ''?>" readonly>
             <label class="input-group-addon">Watt</label>
+        </div>
+        <div class="form-group input-group">
+            <label class="input-group-addon">Daya</label>
+            <input type="text" class="form-control" value="<?= (!empty($header)) ? $header->kwh : ''?>" readonly>
+            <label class="input-group-addon">Kwh</label>
         </div>
         <div class="form-group input-group">
             <label class="input-group-addon">Biaya</label>
             <span class="input-group-addon">Rp</span>
-            <input type="text" class="form-control" value="<?= number_format($header->biaya,2,',','.');?>" readonly>
+            <input type="text" class="form-control" value="<?= (!empty($header)) ? number_format($header->biaya,2,',','.') : '';?>" readonly>
         </div>
         <div class="form-group input-group">
-            <label class="input-group-addon" style="text-align: left;">Status = </label>
+            <label class="input-group-addon" style="text-align: left;">Status </label>
             <input type="text" class="form-control"readonly>
             <span class="input-group-addon" style="text-align: center;">
                 <?php if($status == 1):?>
-                    <span class="badge badge-success">Charging</span>
+                    <span class="badge badge-success">On</span>
                 <?php else:?>
                     <span class="badge badge-danger" style="background-color: red;">Off</span>
                 <?php endif;?>

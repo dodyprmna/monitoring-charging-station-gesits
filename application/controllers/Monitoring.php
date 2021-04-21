@@ -17,19 +17,19 @@ class Monitoring extends CI_Controller {
     public function insert()
     {
         //ambil data dari kontroler
-    	$fk_charging_station    = $this->input->get('id_charging_station');
         $arus                   = $this->input->get('arus');
         $tegangan               = $this->input->get('tegangan');
         $daya                   = $this->input->get('daya');
+        $kwh                    = $this->input->get('kwh');
         $biaya                  = $this->input->get('biaya');
 
         // simpan dalam array
         $data = array(
-            'fk_charging_station'   => $fk_charging_station, 
             'arus'                  => $arus,
             'tegangan'              => $tegangan,
             'daya'                  => $daya,
             'biaya'                 => $biaya,
+            'kwh'                   => $kwh
         );
 
         //input data ke database tbl_monitoring
@@ -48,19 +48,16 @@ class Monitoring extends CI_Controller {
         // get id dari scan
         $id = $this->input->post('id');
 
-        //get jumlah device terdaftar di db?
-        $cek = $this->M_codeigniter->get_where('tbl_charging_station',array('id_charging_station' => $id))->num_rows();
-
         // data scan
         $data_scan = array(
-            'fk_charger' => $id, 
+            'kode_baterai' => $id, 
         );
 
-        //jika jumlah lebih dari 0 atau terdapat device dengan identitas qrcode yg discan
-        if ($cek > 0) {
+        $insert = $this->M_codeigniter->insert('tbl_scan',$data_scan);
+        //jika berhasil insert data scan
+        if ($insert > 0) {
 
-            //input data scan
-            $this->M_codeigniter->insert('tbl_scan',$data_scan);
+            //set output
             $output = array(
                 'status' => true,
                 'pesan' => 'sukses'
@@ -68,7 +65,7 @@ class Monitoring extends CI_Controller {
         } else {
             $output = array(
                 'status' => false,
-                'pesan' => "<div class='col-lg-12'><center><h4>Data tidak ditemukan, silahkan scan ulang dengan qrcode yang benar</h4></center><br><div class='form-group'><button class='btn btn-primary' id='btn-scan' style='width: 100%;'>Scan</button></div></div>"
+                'pesan' => "<div class='col-lg-12'><center><h4>Gagal</h4></center></div></div>"
             );
         }
 
@@ -79,21 +76,17 @@ class Monitoring extends CI_Controller {
     // fungsi ambil data realtime
     public function get_data_real_time()
     {
-        //ambil id dari scan qrcode
-        $id = $this->input->post('id');
-
         //ambil tanggal dan waktu sekarang
         $now = date("Y-m-d H:i:s");
 
         //ambil data 1 detik terakhir untuk menentukan status charging atau off
-        $status = $this->M_monitoring->get_status($id,date('Y-m-d H:i:s',strtotime('-1 seconds',strtotime($now))))->num_rows();
+        $status = $this->M_monitoring->get_status(date('Y-m-d H:i:s',strtotime('-1 seconds',strtotime($now))))->num_rows();
         
-        //cek apakah ada data charging station berdasarkan id yg diambil dari scan qrcode ?
-        // jika ada, ambil data monitoring charging statiom tsb
+        // simpan data yang akan ditampilkan dalam bentuk array
         $data = array(
-            'monitor'    => $this->M_monitoring->get_by_id($id)->result(),
-            'header'     => $this->M_monitoring->get_data_header($id)->row(),
-            'lifetime'   => $this->M_codeigniter->get_where('tbl_scan', array('fk_charger' => $id))->num_rows(),
+            'monitor'    => $this->M_monitoring->get_all(),
+            'header'     => $this->M_monitoring->get_data_header()->row(),
+            'lifetime'   => $this->db->get('tbl_scan')->num_rows(),
             'status'     => $status,
         );
         
